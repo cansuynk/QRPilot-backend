@@ -9,6 +9,18 @@ const config = require("../../config");
 //---------  User Schema  ------------------//
 
 const userSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: "name is required"
+    },
+    surname: {
+        type: String,
+        required: "surname is required"
+    },
+    username: {
+        type: String,
+        required: "username is required"
+    },
     email: {
         type: String,
         required: 'e-mail is required',
@@ -16,10 +28,16 @@ const userSchema = new mongoose.Schema({
     },
     passwordHash: String,
     salt: String,
+    secretAnswer: {
+        type: String,
+        required: "secret answer is required"
+    },
+
 }, {
     timestamps: true
 });
 
+// encryption parts
 userSchema.virtual('password')
     .set(function (password) {
         this._plainPassword = password;

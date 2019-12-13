@@ -1,15 +1,31 @@
 const userController = require("../controller/user-controller");
-const fooController = require("../controller/foo-controller");
+const gameController = require("../controller/game-controller");
+const statisticsController = require("../controller/statistics-controller");
 const jwtAuth = require("./.././middleware/jwtAuth");
 const jwtLocal = require("./.././middleware/jwtLocal");
 
 module.exports = ({router}) => {
     router
-        .post('/signIn', userController.signIn)
+        .post('/signUp', userController.signUp)
         .post('/login', jwtLocal, userController.login)
+        .put('/changePassword', userController.changePassword)
 
-        .post('/foo', jwtAuth, fooController.createFoo)
-        .get('/foo/:_id', jwtAuth, fooController.readFoo)
-        .delete('/foo/:_id', jwtAuth, fooController.deleteFoo)
-        .put('/foo/:_id', jwtAuth, fooController.updateFoo)
+        .post('/game', jwtAuth, gameController.createFoo)
+        .get('/game/:_id', jwtAuth, gameController.readFoo)
+        .delete('/game/:_id', jwtAuth, gameController.deleteFoo)
+        .put('/game/:_id', jwtAuth, gameController.updateFoo)
+
+        /*
+         * creates a new statistics, only username is required
+         */
+        .post('/statistics', jwtAuth, statisticsController.createStatistics)
+        /*
+         * finds statistics with username and returns it
+         */
+        .get('/statistics', jwtAuth, statisticsController.getStatistics)
+        /*
+         * finds statistics with username and updates it using the
+         * rest of the values on the request body
+         */
+        .put('/statistics', jwtAuth, statisticsController.editStatistics)
 };

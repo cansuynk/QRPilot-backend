@@ -1,20 +1,20 @@
-const fooModel = require("./.././models/foo");
+const gameModel = require("../models/game");
 
 module.exports = {
     createFoo: async ctx => {
         try {
-            const result = await fooModel.create(ctx.request.body);
+            const result = await gameModel.create(ctx.request.body);
 
             if (!result) {
                 ctx.body = {
-                    message: "Foo can not be created.",
+                    message: "Game can not be created.",
                     success: false
                 };
                 ctx.status = 400;
             } else {
                 console.log(result);
                 ctx.body = {
-                    message: "Foo successfully created.",
+                    message: "Game successfully created.",
                     success: true,
                     data: result
                 };
@@ -32,17 +32,17 @@ module.exports = {
     },
     readFoo: async ctx => {
        try {
-           const result = await fooModel.findOne({_id: ctx.params._id});
+           const result = await gameModel.findOne({_id: ctx.params._id});
 
            if (!result) {
                ctx.body = {
-                   message: "Foo can not be found.",
+                   message: "Game can not be found.",
                    success: false
                };
                ctx.status = 400;
            } else {
                ctx.body = {
-                   message: "Foo successfully found.",
+                   message: "Game successfully found.",
                    data: result,
                    success: true
                };
@@ -60,16 +60,16 @@ module.exports = {
     },
     updateFoo: async ctx => {
         try {
-            const result = await fooModel.findOne({_id: ctx.params._id});
+            const result = await gameModel.findOne({_id: ctx.params._id});
 
             if (!result) {
                 ctx.body = {
-                    message: "Foo can not be found.",
+                    message: "Game can not be found.",
                     success: false
                 };
                 ctx.status = 400;
             } else {
-                const result2 = await fooModel.findOneAndUpdate(
+                const result2 = await gameModel.findOneAndUpdate(
                     {_id: ctx.params._id},
                     ctx.request.body,
                     {
@@ -80,14 +80,14 @@ module.exports = {
 
                 if (result2) {
                     ctx.body = {
-                        message: "Foo successfully updated.",
+                        message: "Game successfully updated.",
                         data: result,
                         success: true
                     };
                     ctx.status = 200;
                 } else {
                     ctx.body = {
-                        message: "Foo can not be updated.",
+                        message: "Game can not be updated.",
                         success: false
                     };
                     ctx.status = 400;
@@ -105,17 +105,17 @@ module.exports = {
     },
     deleteFoo: async ctx => {
         try {
-            const result = await fooModel.findOneAndRemove({_id: ctx.params._id});
+            const result = await gameModel.findOneAndRemove({_id: ctx.params._id});
 
             if (!result) {
                 ctx.body = {
-                    message: "Company can not be deleted.",
+                    message: "Game can not be deleted.",
                     success: false
                 };
                 ctx.status = 400;
             } else {
                 ctx.body = {
-                    message: "Company successfully deleted.",
+                    message: "Game successfully deleted.",
                     success: true
                 };
                 ctx.status = 200;

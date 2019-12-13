@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../../config");
 
 module.exports = {
-    signIn: async ctx => {
+    signUp: async ctx => {
         try {
             ctx.body = {
                 message: await userModel.User.create(ctx.request.body),
@@ -40,4 +40,34 @@ module.exports = {
             };
         }
     },
-}
+    changePassword: async ctx => {
+        try {
+            // TODO: Fix this.
+
+            console.log(ctx.request.body);
+            const result = await userModel.User.findOne({_id: ctx.request.body._id});
+
+            console.log("result", result);
+
+            const changePassword = await result.setPassword(ctx.request.body.newPassword);
+
+            console.log("change", changePassword);
+
+            const updatedUser = await result.save();
+
+            if(result){
+                ctx.body = {
+                    message: "password successfully updated",
+                    success: true
+                };
+            }
+        }
+        catch (err) {
+            ctx.status = 400;
+            ctx.body = {
+                message: err.errmsg,
+                success: false
+            };
+        }
+    }
+};
