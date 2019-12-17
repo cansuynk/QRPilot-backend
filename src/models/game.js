@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const gameModel = new mongoose.Schema({
     name: {
         type: String,
         required: 'name of the game is required'
     },
-    username: {
-        type: String,
+    adminId: {
+        type: Schema.Types.ObjectId, ref: 'Users',
         required: 'username of the game is required'
     },
     type: {
@@ -14,16 +15,30 @@ const gameModel = new mongoose.Schema({
         required: 'game type is required'
     },
     location: {
+        latitude: Number,
+        longitude: Number,
+        radius: Number
+    },
+    description: {
         type: String,
-        required: 'location of the game is required'
+        required: 'game description is required'
     },
     hints: {
-        type: [String],
-        required: 'hints for the game is required'
+        hint: [String],
+        hintSecret: [String]
+    },
+    deadline: {
+        type: Date
+    },
+    gameLength: {
+        type: Number
     },
     players: {
-        type: [String],
+        type: [{type: Schema.Types.ObjectId, ref: 'Users'}],
         required: 'players of the game are required'
+    },
+    shareCode: {
+        type: String
     },
     /*
     * saves user id of the player who submitted the qr
@@ -37,6 +52,9 @@ const gameModel = new mongoose.Schema({
      * in order to use in statistics.
      */
     ranking: {
+        type: [String]
+    },
+    scores: {
         type: [String]
     },
     /*

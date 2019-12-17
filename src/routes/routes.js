@@ -10,10 +10,10 @@ module.exports = ({router}) => {
         .post('/login', jwtLocal, userController.login)
         .put('/changePassword', userController.changePassword)
 
-        .post('/game', jwtAuth, gameController.createFoo)
-        .get('/game/:_id', jwtAuth, gameController.readFoo)
-        .delete('/game/:_id', jwtAuth, gameController.deleteFoo)
-        .put('/game/:_id', jwtAuth, gameController.updateFoo)
+        .post('/game', jwtAuth, gameController.createGame)
+        .get('/game/:_id', jwtAuth, gameController.readGame)
+        .delete('/game/:_id', jwtAuth, gameController.deleteGame)
+        .put('/game/:_id', jwtAuth, gameController.updateGame)
 
         /*
          * creates a new statistics, only username is required

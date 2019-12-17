@@ -14,3 +14,4 @@ const statisticsModel = new mongoose.Schema({
 const statistics = mongoose.model('statistic', statisticsModel, 'statistics');
 
 module.exports = statistics;
+

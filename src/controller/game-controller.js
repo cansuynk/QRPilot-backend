@@ -1,9 +1,15 @@
 const gameModel = require("../models/game");
+const randomize = require('randomatic');
 
 module.exports = {
-    createFoo: async ctx => {
+    createGame: async ctx => {
         try {
-            const result = await gameModel.create(ctx.request.body);
+            const shareCode = randomize('Aa0', 5);
+
+            let gameData = ctx.request.body;
+            gameData.shareCode = shareCode;
+
+            const result = await gameModel.create(gameData);
 
             if (!result) {
                 ctx.body = {
@@ -30,7 +36,7 @@ module.exports = {
             };
         }
     },
-    readFoo: async ctx => {
+    readGame: async ctx => {
        try {
            const result = await gameModel.findOne({_id: ctx.params._id});
 
@@ -58,7 +64,7 @@ module.exports = {
            };
        }
     },
-    updateFoo: async ctx => {
+    updateGame: async ctx => {
         try {
             const result = await gameModel.findOne({_id: ctx.params._id});
 
@@ -103,7 +109,7 @@ module.exports = {
             };
         }
     },
-    deleteFoo: async ctx => {
+    deleteGame: async ctx => {
         try {
             const result = await gameModel.findOneAndRemove({_id: ctx.params._id});
 

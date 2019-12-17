@@ -9,15 +9,8 @@ const config = require("../../config");
 //---------  User Schema  ------------------//
 
 const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: "name is required"
-    },
-    surname: {
-        type: String,
-        required: "surname is required"
-    },
     username: {
+        unique: true,
         type: String,
         required: "username is required"
     },
@@ -28,11 +21,17 @@ const userSchema = new mongoose.Schema({
     },
     passwordHash: String,
     salt: String,
+    secretQuestion: {
+        type: String,
+        required: "secret question is required"
+    },
     secretAnswer: {
         type: String,
         required: "secret answer is required"
     },
-
+    gameIds: {
+        type: [String]
+    }
 }, {
     timestamps: true
 });
@@ -66,12 +65,12 @@ const User = mongoose.model('User', userSchema);
 //----------Passport Local Strategy--------------//
 
 passport.use(new LocalStrategy({
-        usernameField: 'email',
+        usernameField: 'username',
         passwordField: 'password',
         session: false
     },
-    function (email, password, done) {
-        User.findOne({email}, (err, user) => {
+    function (username, password, done) {
+        User.findOne({username}, (err, user) => {
             console.log("Found a user ", user);
             if (err) {
                 return done(err);
@@ -79,7 +78,7 @@ passport.use(new LocalStrategy({
             if (!user){
                 return done(err);
             }
-            const checked =  user.checkPassword(password);
+            const checked = user.checkPassword(password);
 
             if (!checked) {
                 return done(null, false, {message: 'User does not exist or wrong password.'});
