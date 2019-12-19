@@ -24,4 +24,4 @@ const server = app.listen(config.node_port, () => {
     console.log(`Server listening on port:`);
 });
 
-module.exports = {server};
+module.exports = server;

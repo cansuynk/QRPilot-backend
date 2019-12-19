@@ -71,7 +71,6 @@ passport.use(new LocalStrategy({
     },
     function (username, password, done) {
         User.findOne({username}, (err, user) => {
-            console.log("Found a user ", user);
             if (err) {
                 return done(err);
             }

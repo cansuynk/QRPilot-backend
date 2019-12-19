@@ -28,6 +28,7 @@ module.exports = {
 
             ctx.body = {
                 success: true,
+                id: ctx.result._id,
                 message: "Welcome " + ctx.result.email,
                 data: {
                     token: "JWT " + token
