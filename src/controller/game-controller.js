@@ -36,6 +36,34 @@ module.exports = {
             };
         }
     },
+    joinGame: async ctx => {
+        try {
+            const result = await gameModel.findOne({shareCode: ctx.params.shareCode});
+
+            if (!result) {
+                ctx.body = {
+                    message: "Game can not be found.",
+                    success: false
+                };
+                ctx.status = 400;
+            } else {
+                ctx.body = {
+                    message: "Game successfully found.",
+                    data: result,
+                    success: true
+                };
+                ctx.status = 200;
+            }
+        }
+        catch (err){
+            console.log(err);
+            ctx.status = 400;
+            ctx.body = {
+                message: err,
+                success: false
+            };
+        }
+    },
     readGame: async ctx => {
        try {
            const result = await gameModel.findOne({_id: ctx.params._id});

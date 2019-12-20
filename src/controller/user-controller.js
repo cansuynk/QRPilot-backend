@@ -5,6 +5,8 @@ const config = require("../../config");
 module.exports = {
     signUp: async ctx => {
         try {
+            console.log(ctx.request.body);
+
             ctx.body = {
                 message: await userModel.User.create(ctx.request.body),
                 success: true

@@ -11,6 +11,7 @@ module.exports = ({router}) => {
         .put('/changePassword', userController.changePassword)
 
         .post('/game', jwtAuth, gameController.createGame)
+        .get('/join-game/:shareCode', jwtAuth, gameController.joinGame)
         .get('/game/:_id', jwtAuth, gameController.readGame)
         .delete('/game/:_id', jwtAuth, gameController.deleteGame)
         .put('/game/:_id', jwtAuth, gameController.updateGame)
