@@ -19,6 +19,19 @@ describe('Login endpoint test', () => {
     })
 });
 
+describe('Login endpoint fail case', () => {
+    it('should not login with username: empty, password: empty', async () => {
+        const res = await request(app)
+            .post('/login')
+            .send({
+                username: "",
+                password: "",
+            })
+        expect(res.statusCode).toEqual(400);
+        expect(res.body.message).toEqual("Missing credentials");
+    })
+});
+
 afterAll(async done => {
     // Closing the DB connection allows Jest to exit successfully.
     dbConnection.connection.close();

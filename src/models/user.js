@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
     },
     gameIds: {
         type: [String]
+    },
+    location: {
+        latitude: Number,
+        longitude: Number,
     }
 }, {
     timestamps: true

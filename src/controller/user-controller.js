@@ -1,4 +1,5 @@
 const userModel = require("./.././models/user");
+const gameModel = require("./.././models/game");
 const jwt = require("jsonwebtoken");
 const config = require("../../config");
 
@@ -46,12 +47,7 @@ module.exports = {
     changePassword: async ctx => {
         try {
             // TODO: Fix this.
-
-            console.log(ctx.request.body);
             const result = await userModel.User.findOne({_id: ctx.request.body._id});
-
-            console.log("result", result);
-
             const changePassword = await result.setPassword(ctx.request.body.newPassword);
 
             console.log("change", changePassword);
@@ -69,6 +65,113 @@ module.exports = {
             ctx.status = 400;
             ctx.body = {
                 message: err.errmsg,
+                success: false
+            };
+        }
+    },
+    updateLocation: async ctx => {
+        try{
+            const user = await userModel.User.findOneAndUpdate({_id: ctx.params._id});
+
+            if (!user) {
+                ctx.body = {
+                    message: "User can not be found.",
+                    success: false
+                };
+                ctx.status = 400;
+            } else {
+                const result = await userModel.User.findOneAndUpdate(
+                    {_id: ctx.params._id},
+                    ctx.request.body,
+                    {
+                        upsert: true,
+                        new: true
+                    }
+                );
+
+                if (result) {
+                    ctx.body = {
+                        message: "User successfully updated.",
+                        data: result,
+                        success: true
+                    };
+                    ctx.status = 200;
+                } else {
+                    ctx.body = {
+                        message: "User can not be updated.",
+                        success: false
+                    };
+                    ctx.status = 400;
+                }
+            }
+
+        }
+        catch (err){
+            ctx.status = 400;
+            ctx.body = {
+                message: err,
+                success: false
+            };
+        }
+    },
+    getUserInfo: async ctx => {
+        try{
+            const user = await userModel.User.findOne({_id: ctx.params._id});
+
+            if(!user){
+                ctx.body = {
+                    message: "User can not be found.",
+                    success: false
+                };
+                ctx.status = 400;
+            }
+            else{
+                let returnData = {};
+
+                returnData.username = user.username;
+                returnData.email = user.email;
+                returnData.secretQuestion = user.secretQuestion;
+
+                let history = [{}];
+
+                let gameIds = user.gameIds;
+
+                for(let i = 0; i < gameIds.length; i++){
+                    let game = await gameModel.findOne({_id: gameIds[i]});
+                    let gameInfo = {};
+
+                    console.log("game", game);
+
+                    gameInfo.gameCreateDate = game.createdDate;
+                    gameInfo.gameTitle = game.title;
+
+                    for(let j = 0; j < game.ranking.length; j++){
+                        console.log("hi");
+                        if(game.ranking[j] === user.username){
+                            gameInfo.ranking = j+1;
+                            gameInfo.score = game.scores[j];
+                        }
+                    }
+                    history.push(gameInfo);
+                }
+                console.log(history);
+
+                returnData.history = history;
+
+                console.log("ret", returnData);
+
+                ctx.body = {
+                    message: "User info is read.",
+                    data: returnData,
+                    success: true
+                };
+                ctx.status = 200;
+            }
+        }
+        catch(err){
+            ctx.status = 400;
+            ctx.body = {
+                message: err,
                 success: false
             };
         }

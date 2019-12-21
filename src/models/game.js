@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const gameModel = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: 'name of the game is required'
     },
@@ -61,6 +61,8 @@ const gameModel = new mongoose.Schema({
      * "Created" -> "Being played" -> "Ended"
      */
     status: String
+}, {
+    timestamps: { createdAt: 'createdDate',updatedAt: 'updatedDate'}
 });
 
 const game = mongoose.model('game', gameModel, 'games');

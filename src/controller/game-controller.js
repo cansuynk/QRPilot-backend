@@ -1,4 +1,5 @@
 const gameModel = require("../models/game");
+const userModel = require("../models/user");
 const randomize = require('randomatic');
 
 module.exports = {
@@ -10,6 +11,12 @@ module.exports = {
             gameData.shareCode = shareCode;
 
             const result = await gameModel.create(gameData);
+
+            for (let i = 0; i < gameData.players.length; i++){
+                const player = await userModel.User.findOneAndUpdate({
+                    _id: gameData.players[i]
+                }, {$push: {gameIds: result._id}})
+            }
 
             if (!result) {
                 ctx.body = {
@@ -133,6 +140,52 @@ module.exports = {
             ctx.status = 400;
             ctx.body = {
                 message: err,
+                success: false
+            };
+        }
+    },
+    getLocations: async ctx => {
+        try{
+            const game = await gameModel.findOne({_id: ctx.params._id});
+
+            console.log("game", game);
+
+            if(!game){
+                ctx.status = 400;
+                ctx.body = {
+                    message: "game can not be found",
+                    success: false
+                };
+            }
+            else{
+                let playerArray = game.players;
+
+                console.log("playerArr", playerArray);
+
+                let returnData = [];
+
+                for(let i = 0; i < playerArray.length; i++){
+                    const user = await userModel.User.findOne({_id: playerArray[i]});
+
+                    console.log("user", user);
+
+                    returnData.push(user.location);
+                }
+
+                console.log("ret", returnData);
+
+                ctx.body = {
+                    message: "Locations are successfully read.",
+                    data: returnData,
+                    success: true
+                };
+                ctx.status = 200;
+            }
+        }
+        catch (err){
+            ctx.status = 400;
+            ctx.body = {
+                message: err.errmsg,
                 success: false
             };
         }
