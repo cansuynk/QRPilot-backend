@@ -92,6 +92,7 @@ module.exports = {
                 ctx.body = {
                     message: "Game successfully found.",
                     data: result,
+                    playerNames: playerNames,
                     success: true
                 };
                 ctx.status = 200;
