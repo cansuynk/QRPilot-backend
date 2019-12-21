@@ -23,17 +23,5 @@ module.exports = ({router}) => {
         .get('/get-locations/:_id', jwtAuth, gameController.getLocations)
         .put('/update-location/:_id', jwtAuth, userController.updateLocation)
 
-        /*
-         * creates a new statistics, only username is required
-         */
-        .post('/statistics', jwtAuth, statisticsController.createStatistics)
-        /*
-         * finds statistics with username and returns it
-         */
-        .get('/statistics', jwtAuth, statisticsController.getStatistics)
-        /*
-         * finds statistics with username and updates it using the
-         * rest of the values on the request body
-         */
-        .put('/statistics', jwtAuth, statisticsController.editStatistics)
+        .post('/submit-QR', jwtAuth, gameController.submitQR)
 };

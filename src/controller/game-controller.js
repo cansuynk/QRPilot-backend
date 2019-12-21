@@ -72,32 +72,39 @@ module.exports = {
         }
     },
     readGame: async ctx => {
-       try {
-           const result = await gameModel.findOne({_id: ctx.params._id});
+        try {
+            const result = await gameModel.findOne({_id: ctx.params._id});
 
-           if (!result) {
-               ctx.body = {
-                   message: "Game can not be found.",
-                   success: false
-               };
-               ctx.status = 400;
-           } else {
-               ctx.body = {
-                   message: "Game successfully found.",
-                   data: result,
-                   success: true
-               };
-               ctx.status = 200;
-           }
-       }
-       catch (err){
-           console.log(err);
-           ctx.status = 400;
-           ctx.body = {
-               message: err,
-               success: false
-           };
-       }
+            let playerNames = [];
+
+            for(let i = 0; i < result.players.length; i++){
+                const player =  await userModel.User.findOne({_id: result.players[i]});
+                playerNames.push(player.username);
+            }
+
+            if (!result) {
+                ctx.body = {
+                    message: "Game can not be found.",
+                    success: false
+                };
+                ctx.status = 400;
+            } else {
+                ctx.body = {
+                    message: "Game successfully found.",
+                    data: result,
+                    success: true
+                };
+                ctx.status = 200;
+            }
+        }
+        catch (err){
+            console.log(err);
+            ctx.status = 400;
+            ctx.body = {
+                message: err,
+                success: false
+            };
+        }
     },
     updateGame: async ctx => {
         try {
@@ -217,4 +224,54 @@ module.exports = {
             };
         }
     },
+    submitQR: async ctx => {
+        try {
+            const game = await gameModel.findOne({_id: ctx.request.body.gameId});
+
+            if(!game){
+                ctx.status = 400;
+                ctx.body = {
+                    message: "Game can not be found",
+                    success: false
+                };
+            }
+            else {
+                let hintIndex = game.hints.hint.indexOf(ctx.request.body.hint);
+
+                if (hintIndex === -1) {
+                    ctx.status = 400;
+                    ctx.body = {
+                        message: "Hint can not be found",
+                        success: false
+                    };
+                }
+                else {
+                    let hintSecretIndex = game.hints.hintSecret.indexOf(ctx.request.body.hintSecret);
+
+                    if (hintSecretIndex === -1) {
+                        ctx.status = 400;
+                        ctx.body = {
+                            message: "Hint secret can not be found",
+                            success: false
+                        };
+                    }
+                    else if (hintIndex === hintSecretIndex) {
+                        ctx.status = 200;
+                        ctx.body = {
+                            message: "Successfully found hint and hint secret",
+                            success: true
+                        };
+                    }
+                }
+            }
+        }
+        catch (err){
+            console.log(err);
+            ctx.status = 400;
+            ctx.body = {
+                message: err,
+                success: false
+            };
+        }
+    }
 };
