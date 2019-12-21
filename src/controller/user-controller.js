@@ -175,5 +175,33 @@ module.exports = {
                 success: false
             };
         }
+    },
+    updateUserInfo: async ctx => {
+        try{
+            const user = await userModel.User.findOneAndUpdate({_id: ctx.params._id},
+                ctx.request.body);
+
+            if(!user){
+                ctx.status = 400;
+                ctx.body = {
+                    message: "User can not be updated",
+                    success: false
+                };
+            }
+            else {
+                ctx.status = 200;
+                ctx.body = {
+                    message: "User is updated",
+                    success: true
+                };
+            }
+        }
+        catch(err){
+            ctx.status = 400;
+            ctx.body = {
+                message: err,
+                success: false
+            };
+        }
     }
 };

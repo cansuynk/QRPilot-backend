@@ -12,10 +12,10 @@ module.exports = ({router}) => {
 
             //TODO user info get and put
         .get('/user/:_id', jwtAuth, userController.getUserInfo)
-        //.put('/user/:_id', jwtAuth, userController.updateUserInfo)
+        .put('/user/:_id', jwtAuth, userController.updateUserInfo)
 
         .post('/game', jwtAuth, gameController.createGame)
-        .get('/join-game/:shareCode', jwtAuth, gameController.joinGame)
+        .put('/join-game/:shareCode', jwtAuth, gameController.joinGame)
         .get('/game/:_id', jwtAuth, gameController.readGame)
         .delete('/game/:_id', jwtAuth, gameController.deleteGame)
         .put('/game/:_id', jwtAuth, gameController.updateGame)

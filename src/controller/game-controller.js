@@ -7,8 +7,16 @@ module.exports = {
         try {
             const shareCode = randomize('Aa0', 5);
 
+            const admin = await userModel.User.findOne({_id: ctx.request.body.adminId});
+
+            console.log("admin", admin.username);
+
             let gameData = ctx.request.body;
             gameData.shareCode = shareCode;
+            gameData.ranking = [admin.username];
+            gameData.scores = ["0"];
+
+            console.log(gameData);
 
             const result = await gameModel.create(gameData);
 
@@ -45,7 +53,12 @@ module.exports = {
     },
     joinGame: async ctx => {
         try {
-            const result = await gameModel.findOne({shareCode: ctx.params.shareCode});
+            const user = await userModel.User.findOne({_id: ctx.request.body.userId});
+
+            console.log(user);
+
+            const result = await gameModel.findOneAndUpdate({shareCode: ctx.params.shareCode},
+                {$push: {players: ctx.request.body.userId}, $push:{ranking: user.username}, $push:{scores: "0"}});
 
             if (!result) {
                 ctx.body = {
