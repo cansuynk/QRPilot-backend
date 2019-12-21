@@ -15,6 +15,5 @@ const production = {
 const config = {
     development, production
 };
-
 //module.exports = config[env];
 module.exports = development;

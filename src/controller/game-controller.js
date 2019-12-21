@@ -1,6 +1,7 @@
 const gameModel = require("../models/game");
 const userModel = require("../models/user");
 const randomize = require('randomatic');
+const _ = require('underscore');
 
 module.exports = {
     createGame: async ctx => {
@@ -278,13 +279,35 @@ module.exports = {
                         };
                     }
                     else if (hintIndex === hintSecretIndex) {
-                        const user = await userModel.User.findOneAndUpdate({_id: ctx.request.body.userId});
+                        const user = await userModel.User.findOne({_id: ctx.request.body.userId});
+                        const updateGame = await gameModel.findOne({_id: ctx.request.body.gameId});
 
-                        const updateGame = await gameModel.findOne({_id: ctx.params._id});
+                        let localRanking = updateGame.ranking;
 
-                        let gameScores = updateGame.scores;
-                        let ranking = updateGame.ranking;
+                        let index = -1;
 
+                        console.log("old",localRanking);
+
+                        let filteredObject = localRanking.find(function(item, i){
+                            if(item.names === user.username){
+                                index = i;
+                                console.log("old score", item.scores);
+                                let newScore = Number.parseInt(item.scores) + 10;
+                                item.scores = newScore;
+                                console.log("newScore", newScore);
+                                console.log(item.scores);
+                                return i;
+                            }
+                        });
+
+                        let sortedObjs = _.sortBy(localRanking, function(obj){ return parseInt(obj.scores, 10) });
+
+                        console.log("newTest", sortedObjs.reverse());
+
+                        const game = await gameModel.findOneAndUpdate({_id: ctx.request.body.gameId},
+                            {$set: {ranking: localRanking}}, {
+                            new: true
+                            });
 
                         ctx.status = 200;
                         ctx.body = {
