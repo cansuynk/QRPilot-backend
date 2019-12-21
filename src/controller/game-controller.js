@@ -9,14 +9,14 @@ module.exports = {
 
             const admin = await userModel.User.findOne({_id: ctx.request.body.adminId});
 
-            console.log("admin", admin.username);
-
             let gameData = ctx.request.body;
             gameData.shareCode = shareCode;
-            gameData.ranking = [admin.username];
-            gameData.scores = ["0"];
 
-            console.log(gameData);
+            let ranking = {};
+            ranking.scores = 0;
+            ranking.names = admin.username;
+
+            gameData.ranking = ranking;
 
             const result = await gameModel.create(gameData);
 
@@ -57,8 +57,16 @@ module.exports = {
 
             console.log(user);
 
+            let newRankings = {};
+            newRankings.names = user.username;
+            newRankings.scores = "0";
+
+            console.log(newRankings);
+
             const result = await gameModel.findOneAndUpdate({shareCode: ctx.params.shareCode},
-                {$push: {players: ctx.request.body.userId}, $push:{ranking: user.username}, $push:{scores: "0"}});
+                {$push: {ranking: newRankings, players: ctx.request.body.userId}},
+                {new: true, upsert: true});
+
 
             if (!result) {
                 ctx.body = {
@@ -270,6 +278,14 @@ module.exports = {
                         };
                     }
                     else if (hintIndex === hintSecretIndex) {
+                        const user = await userModel.User.findOneAndUpdate({_id: ctx.request.body.userId});
+
+                        const updateGame = await gameModel.findOne({_id: ctx.params._id});
+
+                        let gameScores = updateGame.scores;
+                        let ranking = updateGame.ranking;
+
+
                         ctx.status = 200;
                         ctx.body = {
                             message: "Successfully found hint and hint secret",

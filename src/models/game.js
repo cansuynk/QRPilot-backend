@@ -51,12 +51,13 @@ const gameModel = new mongoose.Schema({
      * calculates the rankings and stores it at the end of the game
      * in order to use in statistics.
      */
-    ranking: {
-        type: [String]
-    },
-    scores: {
-        type: [String]
-    },
+    ranking: [
+        {
+            names: String,
+            scores: String
+        }
+        ]
+    ,
     /*
      * "Created" -> "Being played" -> "Ended"
      */

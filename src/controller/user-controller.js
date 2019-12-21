@@ -71,7 +71,9 @@ module.exports = {
     },
     updateLocation: async ctx => {
         try{
-            const user = await userModel.User.findOneAndUpdate({_id: ctx.params._id});
+            console.log("ctx.request.body", ctx.request.body);
+
+            const user = await userModel.User.findOne({_id: ctx.params._id});
 
             if (!user) {
                 ctx.body = {
@@ -82,7 +84,7 @@ module.exports = {
             } else {
                 const result = await userModel.User.findOneAndUpdate(
                     {_id: ctx.params._id},
-                    ctx.request.body,
+                    {$set: {location: ctx.request.body}},
                     {
                         upsert: true,
                         new: true
