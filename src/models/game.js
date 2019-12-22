@@ -41,13 +41,6 @@ const gameModel = new mongoose.Schema({
         type: String
     },
     /*
-    * saves user id of the player who submitted the qr
-    * in order to calculate rankings when requested, on runtime
-    */
-    submittedQRs: {
-        type: [String]
-    },
-    /*
      * calculates the rankings and stores it at the end of the game
      * in order to use in statistics.
      */

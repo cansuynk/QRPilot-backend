@@ -239,7 +239,7 @@ module.exports = {
 
             let newRanking = [];
 
-            newRanking = _.reject(game.ranking, function(el) { return el.username !== user.username; });
+            newRanking = _.reject(game.ranking, function(el) { return el.names === user.username; });
 
             console.log("newPlayers", newPlayers);
             console.log("newRanking", newRanking);
