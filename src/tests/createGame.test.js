@@ -6,7 +6,7 @@ const dbConnection = require("../database/mongooseDatabase");
 let userId;
 let userToken;
 
-describe('Login endpoint test', () => {
+describe('Login step for createGame endpoint test', () => {
     it('should login with username: yakup, password: yakup', async () => {
         const res = await request(app)
             .post('/login')
@@ -29,7 +29,7 @@ describe('create endpoint test', () => {
             .post('/game')
             .send({
                 "title": "Best Game Ever",
-                "adminId": "5dfe0656babe070012d6a50b",
+                "adminId": userId,
                 "type": "Standard",
                 "location": {
                   "latitude": 41.105399,
@@ -42,7 +42,7 @@ describe('create endpoint test', () => {
                     "hintSecrets": ["595cdf23-4f84-43bc-9f53-9d79008a356e"	, "b363e30e-68ba-481e-a92e-05708cb79a3c","5e8f3b04-0c89-4938-8615-f7ade65cfddf"]
                 },
                 "gameLength": 50,
-                "players": ["5dfe0656babe070012d6a50b"],
+                "players": [userId],
                 "status": "created"
             }).set({ Authorization: userToken})
 
@@ -52,4 +52,9 @@ describe('create endpoint test', () => {
     })
 });
 
-
+afterAll(async done => {
+    // Closing the DB connection allows Jest to exit successfully.
+    dbConnection.connection.close();
+    app.close();
+    done();
+});
