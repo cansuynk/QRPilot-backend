@@ -149,8 +149,7 @@ module.exports = {
                     gameInfo.gameTitle = game.title;
 
                     for(let j = 0; j < game.ranking.length; j++){
-                        console.log("hi");
-                        if(game.ranking[j] === user.username){
+                        if(game.ranking[j].names === user.username){
                             gameInfo.ranking = j+1;
                             gameInfo.score = game.scores[j];
                         }

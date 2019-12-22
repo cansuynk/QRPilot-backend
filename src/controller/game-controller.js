@@ -68,7 +68,6 @@ module.exports = {
                 {$push: {ranking: newRankings, players: ctx.request.body.userId}},
                 {new: true, upsert: true});
 
-
             if (!result) {
                 ctx.body = {
                     message: "Game can not be found.",
@@ -308,7 +307,7 @@ module.exports = {
                         console.log("newTest", sortedObjs.reverse());
 
                         const game = await gameModel.findOneAndUpdate({_id: ctx.request.body.gameId},
-                            {$set: {ranking: sortedObjs.reverse()}}, {
+                            {$set: {ranking: sortedObjs}}, {
                             new: true
                             });
 
