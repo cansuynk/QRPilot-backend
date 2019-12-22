@@ -68,6 +68,11 @@ module.exports = {
                 {$push: {ranking: newRankings, players: ctx.request.body.userId}},
                 {new: true, upsert: true});
 
+            const user2 = await userModel.User.findOneAndUpdate({_id: ctx.request.body.userId},
+                {$push: {gameIds: result._id}},{
+                new: true
+                });
+
             if (!result) {
                 ctx.body = {
                     message: "Game can not be found.",
