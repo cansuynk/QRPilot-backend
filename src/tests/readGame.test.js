@@ -37,6 +37,18 @@ describe('read game endpoint test', () => {
 });
 
 
+describe('read game endpoint test', () => {
+    it('should fail on fetching game data', async () => {
+        const res = await request(app)
+            .get('/game/' + "11111")
+            .set({ Authorization: userToken})
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body.success).toBe(false);
+        expect(res.body.message).toEqual('User can not be found.');
+    })
+});
+
 afterAll(async done => {
     // Closing the DB connection allows Jest to exit successfully.
     dbConnection.connection.close();
