@@ -182,7 +182,8 @@ module.exports = {
     updateUserInfo: async ctx => {
         try{
             const user = await userModel.User.findOneAndUpdate({_id: ctx.params._id},
-                ctx.request.body);
+                ctx.request.body,
+                {new: true});
 
             if(!user){
                 ctx.status = 400;

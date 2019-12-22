@@ -347,7 +347,7 @@ module.exports = {
             }
 
             const updateGame = await gameModel.findOneAndUpdate({_id: ctx.request.body.gameId},
-                {$set: {deadline: Date.now() + game.duration, status: "Being Played"}},
+                {$set: {deadline: Date.now() + game.gameLength, status: "Being Played"}},
                 {new: true});
 
             if(!updateGame){
