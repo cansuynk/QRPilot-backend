@@ -31,7 +31,7 @@ describe('Login step for getLocation endpoint test', () => {
 describe('Join game endpoint test', () => {
     it('should fail on joining the game with the given share code', async () => {
         const res = await request(app)
-            .put('/join-game/' + "none existing oç" )
+            .put('/join-game/' + "none existing game" )
             .send({userId: userId})
             .set({ Authorization: userToken});
 
