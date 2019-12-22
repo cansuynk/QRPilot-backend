@@ -135,7 +135,7 @@ module.exports = {
                 returnData.email = user.email;
                 returnData.secretQuestion = user.secretQuestion;
 
-                let history = [{}];
+                let history = [];
 
                 let gameIds = user.gameIds;
 
@@ -151,7 +151,7 @@ module.exports = {
                     for(let j = 0; j < game.ranking.length; j++){
                         if(game.ranking[j].names === user.username){
                             gameInfo.ranking = j+1;
-                            gameInfo.score = game.scores[j];
+                            gameInfo.score = game.ranking[j].scores;
                         }
                     }
                     history.push(gameInfo);
