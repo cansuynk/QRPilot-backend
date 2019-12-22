@@ -13,6 +13,7 @@ describe('Login step for getUserInfo endpoint test', () => {
                 username: "burak",
                 password: "burak",
             })
+        console.log(res.body);
         expect(res.statusCode).toEqual(200);
         expect(res.body.success).toBe(true);
         expect(res.body.message).toEqual('Welcome burak');

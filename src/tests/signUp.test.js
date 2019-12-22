@@ -4,7 +4,7 @@ const dbConnection = require("../database/mongooseDatabase");
 const userModel = require("./.././models/user");
 
 describe('Signup endpoint test', () => {
-    it('should sign up with username: test, password: test, email: test, secretQuestion: test, secretAnswer: test', async () => {
+    it('should sign up with username: test1, password: test1, email: test1, secretQuestion: test1, secretAnswer: test1', async () => {
         const res = await request(app)
             .post('/signUp')
             .send({

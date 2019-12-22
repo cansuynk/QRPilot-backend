@@ -14,7 +14,7 @@ describe('Login endpoint test', () => {
             })
         expect(res.statusCode).toEqual(200);
         expect(res.body.success).toBe(true);
-        expect(res.body.message).toEqual('Welcome yakup');
+        expect(res.body.message).toEqual('Welcome yakup@yakup.com');
         userId = res.body.id;
     })
 });

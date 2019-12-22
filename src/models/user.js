@@ -99,7 +99,6 @@ const jwtOptions = {
 
 passport.use(new JwtStrategy(jwtOptions, function (payload, done) {
         User.findById(payload.id, (err, user) => {
-            console.log(payload.id);
 
             if (err) {
                 return done(err)

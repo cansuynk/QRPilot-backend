@@ -19,6 +19,7 @@ describe('Login step for getLocation endpoint test', () => {
                 username: "burak",
                 password: "burak",
             })
+        console.log(res.body);
         expect(res.statusCode).toEqual(200);
         expect(res.body.success).toBe(true);
         expect(res.body.message).toEqual('Welcome burak');
@@ -30,13 +31,12 @@ describe('Login step for getLocation endpoint test', () => {
 describe('Join game endpoint test', () => {
     it('should fail on joining the game with the given share code', async () => {
         const res = await request(app)
-            .put('/join-game/' + "none existing game" )
+            .put('/join-game/' + "none existing oç" )
             .send({userId: userId})
             .set({ Authorization: userToken});
 
         expect(res.statusCode).toEqual(400);
         expect(res.body.success).toBe(false);
-        expect(res.body.message).toEqual('Game can not be found.');
     })
 });
 

@@ -115,6 +115,8 @@ module.exports = {
         try{
             const user = await userModel.User.findOne({_id: ctx.params._id});
 
+            console.log(user);
+
             if(!user){
                 ctx.body = {
                     message: "User can not be found.",
@@ -162,7 +164,7 @@ module.exports = {
         catch(err){
             ctx.status = 400;
             ctx.body = {
-                message: err,
+                message: "catch",
                 success: false
             };
         }

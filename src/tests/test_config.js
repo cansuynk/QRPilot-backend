@@ -1,10 +1,10 @@
 const EXPORTS = {
-    GAME_ID : "5dffaee8e3c07700129184d0",
-    SHARE_CODE : "SPD3A",
-    HINT1 : "test1",
-    HINT2 : "test2",
-    HINT_SECRET1 : "874a7bdc-644e-4e8e-9711-b686db8c40a1",
-    HINT_SECRET2 : "316ff7f4-8567-48b2-94a8-bfa10687e38f",
+    GAME_ID : "5dffc24de3c07700129184d6",
+    SHARE_CODE : "lmS0Z",
+    HINT1 : "a",
+    HINT2 : "b",
+    HINT_SECRET1 : "da6a7c80-cdfe-4f00-8ff2-9c71c89fc533",
+    HINT_SECRET2 : "4ad780a4-2e79-4658-b07d-f7e582b82251",
 };
 
 module.exports = EXPORTS;

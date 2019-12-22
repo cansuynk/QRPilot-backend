@@ -61,7 +61,7 @@ module.exports = {
 
             const result = await gameModel.findOneAndUpdate({shareCode: ctx.params.shareCode},
                 {$push: {ranking: newRankings, players: ctx.request.body.userId}},
-                {new: true, upsert: true});
+                {new: true});
 
             const user2 = await userModel.User.findOneAndUpdate({_id: ctx.request.body.userId},
                 {$push: {gameIds: result._id}},{

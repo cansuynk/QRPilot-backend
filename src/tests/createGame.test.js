@@ -11,19 +11,19 @@ describe('Login step for createGame endpoint test', () => {
         const res = await request(app)
             .post('/login')
             .send({
-                username: "burak",
-                password: "burak",
+                username: "yakup",
+                password: "yakup",
             })
         expect(res.statusCode).toEqual(200);
         expect(res.body.success).toBe(true);
-        expect(res.body.message).toEqual('Welcome burak');
+        expect(res.body.message).toEqual('Welcome yakup@yakup.com');
         userId = res.body.id;
         userToken = res.body.data.token
-    })
+    });
 });
 
 describe('create endpoint test', () => {
-    it('should create a game sucessfully', async () => {
+    it('should create a game successfully', async () => {
         const res = await request(app)
             .post('/game')
             .send({

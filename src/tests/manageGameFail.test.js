@@ -31,7 +31,6 @@ describe('Start game endpoint test fail', () => {
             })
             .set({ Authorization: userToken});
 
-            console.log(res.body)
         expect(res.statusCode).toEqual(400);
         expect(res.body.success).toBe(false);
         expect(res.body.message).toEqual("catch");

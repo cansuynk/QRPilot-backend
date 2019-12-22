@@ -45,7 +45,6 @@ describe('read game endpoint test', () => {
 
         expect(res.statusCode).toEqual(400);
         expect(res.body.success).toBe(false);
-        expect(res.body.message).toEqual('User can not be found.');
     })
 });
 
