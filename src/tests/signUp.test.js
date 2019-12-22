@@ -8,18 +8,19 @@ describe('Signup endpoint test', () => {
         const res = await request(app)
             .post('/signUp')
             .send({
-                username: "test",
-                email: "test",
-                password: "test",
-                secretQuestion: "test",
-                secretAnswer: "test"
+                username: "test1",
+                email: "test1",
+                password: "test1",
+                secretQuestion: "test1",
+                secretAnswer: "test1"
             });
+        console.log("res", res);
         expect(res.statusCode).toEqual(200);
         expect(res.body.success).toBe(true);
-        expect(res.body.message.email).toEqual('test');
-        expect(res.body.message.username).toEqual('test');
-        expect(res.body.message.secretAnswer).toEqual('test');
-        expect(res.body.message.secretQuestion).toEqual('test');
+        expect(res.body.message.email).toEqual('test1');
+        expect(res.body.message.username).toEqual('test1');
+        expect(res.body.message.secretAnswer).toEqual('test1');
+        expect(res.body.message.secretQuestion).toEqual('test1');
     })
 });
 
@@ -30,7 +31,6 @@ describe('SignUp endpoint fail case', () => {
             .send({
                 username: "",
             });
-        console.log("ressss", res.body);
         expect(res.statusCode).toEqual(400);
         expect(res.body.success).toBe(false);
     })
@@ -38,7 +38,7 @@ describe('SignUp endpoint fail case', () => {
 
 afterAll(async done => {
     // Closing the DB connection allows Jest to exit successfully.
-    const testUser = await userModel.User.findOneAndRemove({username: "test"});
+    const testUser = await userModel.User.findOneAndRemove({username: "test1"});
 
     dbConnection.connection.close();
     app.close();

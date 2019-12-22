@@ -12,7 +12,6 @@ module.exports = {
                 };
                 ctx.status = 400;
             } else {
-                console.log(result);
                 ctx.body = {
                     message: "Statistics successfully created.",
                     success: true,
@@ -73,7 +72,6 @@ module.exports = {
                 };
                 ctx.status = 400;
             } else {
-                console.log(result);
                 ctx.body = {
                     message: "Statistics successfully updated.",
                     success: true,

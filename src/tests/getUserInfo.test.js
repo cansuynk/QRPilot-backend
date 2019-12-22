@@ -23,18 +23,17 @@ describe('Login step for getUserInfo endpoint test', () => {
 
 
 describe('getUserInfo endpoint test', () => {
-    it('should fetch locations of the players from the game', async () => {
+    it('should fetch user information of the user Burak ', async () => {
         const res = await request(app)
             .get('/user/' + userId)
             .set({ Authorization: userToken})
-            
+
         expect(res.statusCode).toEqual(200);
         expect(res.body.success).toBe(true);
+        expect(res.body.data.username).toEqual('burak');
         expect(res.body.message).toEqual('User info is read.');
     })
 });
-
-
 
 afterAll(async done => {
     // Closing the DB connection allows Jest to exit successfully.

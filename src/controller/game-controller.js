@@ -34,7 +34,6 @@ module.exports = {
                 };
                 ctx.status = 400;
             } else {
-                console.log(result);
                 ctx.body = {
                     message: "Game successfully created.",
                     success: true,
@@ -56,13 +55,9 @@ module.exports = {
         try {
             const user = await userModel.User.findOne({_id: ctx.request.body.userId});
 
-            console.log(user);
-
             let newRankings = {};
             newRankings.names = user.username;
             newRankings.scores = "0";
-
-            console.log(newRankings);
 
             const result = await gameModel.findOneAndUpdate({shareCode: ctx.params.shareCode},
                 {$push: {ranking: newRankings, players: ctx.request.body.userId}},
@@ -182,8 +177,6 @@ module.exports = {
         try{
             const game = await gameModel.findOne({_id: ctx.params._id});
 
-            console.log("game", game);
-
             if(!game){
                 ctx.status = 400;
                 ctx.body = {
@@ -194,19 +187,13 @@ module.exports = {
             else{
                 let playerArray = game.players;
 
-                console.log("playerArr", playerArray);
-
                 let returnData = [];
 
                 for(let i = 0; i < playerArray.length; i++){
                     const user = await userModel.User.findOne({_id: playerArray[i]});
 
-                    console.log("user", user);
-
                     returnData.push(user.location);
                 }
-
-                console.log("ret", returnData);
 
                 ctx.body = {
                     message: "Locations are successfully read.",
@@ -290,18 +277,12 @@ module.exports = {
 
                         let index = -1;
 
-                        console.log("old",localRanking);
-
                         let newScore;
 
                         let filteredObject = localRanking.find(function(item, i){
-                            console.log("itemname",item.names);
-                            console.log("username",user.username);
-
                             if(item.names === user.username){
                                 index = i;
                                 newScore = Number.parseInt(item.scores) + 10;
-                                console.log("newScore", newScore);
                                 item.scores = newScore;
                                 return i;
                             }
@@ -309,19 +290,12 @@ module.exports = {
 
                         let sortedObjs = _.sortBy(localRanking, function(obj){ return parseInt(obj.scores, 10) });
 
-                        console.log("newTest", sortedObjs.reverse());
-
                         const game = await gameModel.findOneAndUpdate({_id: ctx.request.body.gameId},
                             {$set: {ranking: sortedObjs}}, {
                             new: true
                             });
 
-                        console.log("hints.length", game.hints.hint.length * 10);
-                        console.log("outside", newScore);
-
                         if(newScore >= game.hints.hint.length * 10){
-                            console.log("Game is finished");
-
                             const game = await gameModel.findOneAndUpdate({_id: ctx.request.body.gameId},
                                 {$set: {status: "Ended"}}, {
                                     new: true
@@ -335,8 +309,6 @@ module.exports = {
                             };
                         }
                         else {
-                            console.log("Game is not finished");
-
                             ctx.status = 200;
                             ctx.body = {
                                 data: game,
@@ -388,8 +360,6 @@ module.exports = {
                     success: true
                 };
             }
-
-            console.log("updateGame", updateGame)
         }
         catch(err){
             ctx.status = 400;

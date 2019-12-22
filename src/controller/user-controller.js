@@ -7,8 +7,6 @@ const _ = require("underscore");
 module.exports = {
     signUp: async ctx => {
         try {
-            console.log(ctx.request.body);
-
             ctx.body = {
                 message: await userModel.User.create(ctx.request.body),
                 success: true
@@ -51,8 +49,6 @@ module.exports = {
             const result = await userModel.User.findOne({_id: ctx.request.body._id});
             const changePassword = await result.setPassword(ctx.request.body.newPassword);
 
-            console.log("change", changePassword);
-
             const updatedUser = await result.save();
 
             if(result){
@@ -72,8 +68,6 @@ module.exports = {
     },
     updateLocation: async ctx => {
         try{
-            console.log("ctx.request.body", ctx.request.body);
-
             const user = await userModel.User.findOne({_id: ctx.params._id});
 
             if (!user) {
@@ -143,8 +137,6 @@ module.exports = {
                     let game = await gameModel.findOne({_id: gameIds[i]});
                     let gameInfo = {};
 
-                    console.log("game", game);
-
                     gameInfo.gameCreateDate = game.createdDate;
                     gameInfo.gameTitle = game.title;
 
@@ -156,11 +148,8 @@ module.exports = {
                     }
                     history.push(gameInfo);
                 }
-                console.log(history);
 
                 returnData.history = history;
-
-                console.log("ret", returnData);
 
                 ctx.body = {
                     message: "User info is read.",
@@ -240,14 +229,9 @@ module.exports = {
 
             newRanking = _.reject(game.ranking, function(el) { return el.names === user.username; });
 
-            console.log("newPlayers", newPlayers);
-            console.log("newRanking", newRanking);
-
             const newGame = await gameModel.findOneAndUpdate({_id: ctx.request.body.gameId},
                 {$set: {players: newPlayers, ranking: newRanking}},
                 {new: true});
-
-            console.log("newGame", newGame);
 
             if(newGame){
                 ctx.status = 200;
