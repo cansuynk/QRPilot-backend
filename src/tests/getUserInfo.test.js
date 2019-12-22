@@ -21,7 +21,6 @@ describe('Login step for getUserInfo endpoint test', () => {
     })
 });
 
-
 describe('getUserInfo endpoint test', () => {
     it('should fetch user information of the user Burak ', async () => {
         const res = await request(app)

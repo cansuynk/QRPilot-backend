@@ -14,7 +14,6 @@ describe('Signup endpoint test', () => {
                 secretQuestion: "test1",
                 secretAnswer: "test1"
             });
-        console.log("res", res);
         expect(res.statusCode).toEqual(200);
         expect(res.body.success).toBe(true);
         expect(res.body.message.email).toEqual('test1');
