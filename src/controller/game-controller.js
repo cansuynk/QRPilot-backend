@@ -261,12 +261,6 @@ module.exports = {
             else {
                 let hintIndex = game.hints.hint.indexOf(ctx.request.body.hint);
 
-                console.log("????", game.hints);
-                console.log("hint", game.hints.hint);
-                console.log("hints", game.hints.hintSecret);
-                console.log("hintIndex", hintIndex);
-
-
                 if (hintIndex === -1) {
                     ctx.status = 200;
                     ctx.body = {

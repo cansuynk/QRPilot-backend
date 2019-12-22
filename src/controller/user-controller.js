@@ -211,7 +211,7 @@ module.exports = {
     kickPlayer: async ctx => {
         try{
             const game = await gameModel.findOne({_id: ctx.request.body.gameId});
-            const user = await userModel.User.findOne({_id: ctx.request.body.userId});
+            const user = await userModel.User.findOne({username: ctx.request.body.username});
 
             if(!user){
                 ctx.status = 400;
