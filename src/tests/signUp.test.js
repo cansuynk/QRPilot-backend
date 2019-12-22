@@ -23,7 +23,7 @@ describe('Signup endpoint test', () => {
     })
 });
 
-describe('Login endpoint fail case', () => {
+describe('SignUp endpoint fail case', () => {
     it('should not sign up with username: test', async () => {
         const res = await request(app)
             .post('/signUp')

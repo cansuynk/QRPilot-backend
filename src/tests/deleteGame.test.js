@@ -5,8 +5,9 @@ const dbConnection = require("../database/mongooseDatabase");
 
 let userId;
 let userToken;
+let createdGameId;
 
-describe('Login step for createGame endpoint test', () => {
+describe('Login step for deleteGame endpoint test', () => {
     it('should login with username: yakup, password: yakup', async () => {
         const res = await request(app)
             .post('/login')
@@ -45,12 +46,28 @@ describe('create endpoint test', () => {
                 "players": [userId],
                 "status": "created"
             }).set({ Authorization: userToken})
-
+        
         expect(res.statusCode).toEqual(200);
         expect(res.body.success).toBe(true);
         expect(res.body.message).toEqual('Game successfully created.');
+        createdGameId = res.body.data._id
     })
 });
+
+describe('DeleteGame endpoint test', () => {
+    it('should recently created game', async () => {
+        const res = await request(app)
+            .delete('/delete/' + createdGameId)
+            .setset({ Authorization: userToken})
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.message).toEqual('Game successfully deleted.');
+        userId = res.body.id;
+        userToken = res.body.data.token
+    })
+});
+
 
 afterAll(async done => {
     // Closing the DB connection allows Jest to exit successfully.
