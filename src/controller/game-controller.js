@@ -252,7 +252,7 @@ module.exports = {
             const game = await gameModel.findOne({_id: ctx.request.body.gameId});
 
             if(!game){
-                ctx.status = 400;
+                ctx.status = 200;
                 ctx.body = {
                     message: "Game can not be found",
                     success: false
@@ -261,8 +261,14 @@ module.exports = {
             else {
                 let hintIndex = game.hints.hint.indexOf(ctx.request.body.hint);
 
+                console.log("????", game.hints);
+                console.log("hint", game.hints.hint);
+                console.log("hints", game.hints.hintSecret);
+                console.log("hintIndex", hintIndex);
+
+
                 if (hintIndex === -1) {
-                    ctx.status = 400;
+                    ctx.status = 200;
                     ctx.body = {
                         message: "Hint can not be found",
                         success: false
@@ -272,7 +278,7 @@ module.exports = {
                     let hintSecretIndex = game.hints.hintSecret.indexOf(ctx.request.body.hintSecret);
 
                     if (hintSecretIndex === -1) {
-                        ctx.status = 400;
+                        ctx.status = 200;
                         ctx.body = {
                             message: "Hint secret can not be found",
                             success: false
@@ -311,6 +317,7 @@ module.exports = {
 
                         ctx.status = 200;
                         ctx.body = {
+                            data: game,
                             message: "Successfully found hint and hint secret",
                             success: true
                         };
@@ -322,7 +329,49 @@ module.exports = {
             console.log(err);
             ctx.status = 400;
             ctx.body = {
-                message: err,
+                message: "catch",
+                success: false
+            };
+        }
+    },
+    startGame : async ctx => {
+        try{
+            const game = await gameModel.findOne({_id: ctx.request.body.gameId});
+
+            if(!game){
+                ctx.status = 200;
+                ctx.body = {
+                    message: "Can not find the game",
+                    success: false
+                };
+            }
+
+            const updateGame = await gameModel.findOneAndUpdate({_id: ctx.request.body.gameId},
+                {$set: {deadline: Date.now() + game.duration, status: "Being Played"}},
+                {new: true});
+
+            if(!updateGame){
+                ctx.status = 200;
+                ctx.body = {
+                    message: "Can not started the game",
+                    success: false
+                };
+            }
+            else {
+                ctx.status = 200;
+                ctx.body = {
+                    data: updateGame,
+                    message: "Successfully started the game",
+                    success: true
+                };
+            }
+
+            console.log("updateGame", updateGame)
+        }
+        catch(err){
+            ctx.status = 400;
+            ctx.body = {
+                message: "catch",
                 success: false
             };
         }

@@ -2,6 +2,7 @@ const userModel = require("./.././models/user");
 const gameModel = require("./.././models/game");
 const jwt = require("jsonwebtoken");
 const config = require("../../config");
+const _ = require("underscore");
 
 module.exports = {
     signUp: async ctx => {
@@ -199,6 +200,73 @@ module.exports = {
             }
         }
         catch(err){
+            ctx.status = 400;
+            ctx.body = {
+                message: err,
+                success: false
+            };
+        }
+    },
+    kickPlayer: async ctx => {
+        try{
+            const game = await gameModel.findOne({_id: ctx.request.body.gameId});
+            const user = await userModel.User.findOne({_id: ctx.request.body.userId});
+
+            if(!user){
+                ctx.status = 400;
+                ctx.body ={
+                    message: "Can not find the user",
+                    success: false
+                }
+            }
+
+            if(!game){
+                ctx.status = 400;
+                ctx.body ={
+                    message: "Can not find the game",
+                    success: false
+                }
+            }
+
+            let newPlayers = game.players;
+
+            let playerIndex = newPlayers.indexOf(user._id);
+
+            if(playerIndex > -1) {
+                newPlayers.splice(playerIndex, 1);
+            }
+
+            let newRanking = [];
+
+            newRanking = _.reject(game.ranking, function(el) { return el.username !== user.username; });
+
+            console.log("newPlayers", newPlayers);
+            console.log("newRanking", newRanking);
+
+            const newGame = await gameModel.findOneAndUpdate({_id: ctx.request.body.gameId},
+                {$set: {players: newPlayers, ranking: newRanking}},
+                {new: true});
+
+            console.log("newGame", newGame);
+
+            if(newGame){
+                ctx.status = 200;
+                ctx.body ={
+                    data: newGame,
+                    message: "Successfully kicked player",
+                    success: true
+                }
+            }
+            else {
+                ctx.status = 400;
+                ctx.body ={
+                    message: "Can not kick player",
+                    success: false
+                }
+            }
+        }
+        catch (err) {
+            console.log(err);
             ctx.status = 400;
             ctx.body = {
                 message: err,
