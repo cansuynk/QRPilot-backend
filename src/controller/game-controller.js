@@ -286,7 +286,6 @@ module.exports = {
 
                         let index = -1;
 
-
                         console.log("old",localRanking);
 
                         let newScore;
@@ -309,7 +308,7 @@ module.exports = {
                         console.log("newTest", sortedObjs.reverse());
 
                         const game = await gameModel.findOneAndUpdate({_id: ctx.request.body.gameId},
-                            {$set: {ranking: localRanking}}, {
+                            {$set: {ranking: sortedObjs.reverse()}}, {
                             new: true
                             });
 
