@@ -286,16 +286,20 @@ module.exports = {
 
                         let index = -1;
 
+
                         console.log("old",localRanking);
 
+                        let newScore;
+
                         let filteredObject = localRanking.find(function(item, i){
+                            console.log("itemname",item.names);
+                            console.log("username",user.username);
+
                             if(item.names === user.username){
                                 index = i;
-                                console.log("old score", item.scores);
-                                let newScore = Number.parseInt(item.scores) + 10;
-                                item.scores = newScore;
+                                newScore = Number.parseInt(item.scores) + 10;
                                 console.log("newScore", newScore);
-                                console.log(item.scores);
+                                item.scores = newScore;
                                 return i;
                             }
                         });
@@ -309,12 +313,34 @@ module.exports = {
                             new: true
                             });
 
-                        ctx.status = 200;
-                        ctx.body = {
-                            data: game,
-                            message: "Successfully found hint and hint secret",
-                            success: true
-                        };
+                        console.log("hints.length", game.hints.hint.length * 10);
+                        console.log("outside", newScore);
+
+                        if(newScore >= game.hints.hint.length * 10){
+                            console.log("Game is finished");
+
+                            const game = await gameModel.findOneAndUpdate({_id: ctx.request.body.gameId},
+                                {$set: {status: "Ended"}}, {
+                                    new: true
+                                });
+
+                            ctx.status = 200;
+                            ctx.body = {
+                                data: game,
+                                message: "GAME ENDED! Successfully found hint and hint secret",
+                                success: true
+                            };
+                        }
+                        else {
+                            console.log("Game is not finished");
+
+                            ctx.status = 200;
+                            ctx.body = {
+                                data: game,
+                                message: "Successfully found hint and hint secret",
+                                success: true
+                            };
+                        }
                     }
                 }
             }
