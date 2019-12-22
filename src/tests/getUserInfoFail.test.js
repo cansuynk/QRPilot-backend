@@ -21,13 +21,12 @@ describe('Login step for getUserInfo endpoint test', () => {
     })
 });
 
-describe('getUserInfo endpoint test', () => {
-    it('should fetch user information of the user Burak ', async () => {
+describe('getUserInfo endpoint test Fail', () => {
+    it('should not be able to fetch user information of the user Burak ', async () => {
         const res = await request(app)
             .get('/user/' + "1")
             .set({ Authorization: userToken})
 
-        console.log(res.body);
         expect(res.statusCode).toEqual(400);
         expect(res.body.success).toBe(false);
     })
